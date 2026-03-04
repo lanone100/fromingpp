@@ -9,7 +9,6 @@
         :root {
             --primary: #0f172a;
             --accent: #3b82f6;
-            --accent-hover: #2563eb;
             --bg: #f1f5f9;
             --card-bg: #ffffff;
             --text-main: #1e293b;
@@ -17,230 +16,178 @@
             --success: #10b981;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: var(--bg);
-            color: var(--text-main);
             display: flex;
             justify-content: center;
             min-height: 100vh;
             padding: 10px;
         }
 
-        .app-container {
-            width: 100%;
-            max-width: 500px;
-            margin: 10px auto;
-        }
+        .app-container { width: 100%; max-width: 500px; margin: auto; }
 
-        /* 頂部語言與標題 */
+        /* --- 修正後的 Header 佈局 --- */
         .glass-header {
             background: var(--primary);
             color: white;
-            padding: 25px 20px;
+            padding: 20px;
             border-radius: 24px 24px 0 0;
-            text-align: center;
-            position: relative;
+            display: flex;
+            flex-direction: column; /* 垂直排列防止重疊 */
+            align-items: center;
+            gap: 12px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
+        .title-area { text-align: center; width: 100%; }
+        
+        .title-area h1 {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .title-area p {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
         .lang-toggle {
-            position: absolute;
-            top: 15px;
-            right: 15px;
             display: flex;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             padding: 4px;
             border-radius: 12px;
+            width: fit-content;
         }
 
         .lang-btn {
-            padding: 4px 10px;
-            font-size: 0.75rem;
+            padding: 6px 16px;
+            font-size: 0.85rem;
             border: none;
             background: transparent;
             color: rgba(255,255,255,0.6);
             cursor: pointer;
             border-radius: 8px;
             transition: 0.2s;
+            font-weight: 500;
         }
 
         .lang-btn.active {
             background: white;
             color: var(--primary);
             font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        /* --- 結束修正 --- */
 
-        .glass-header h1 {
-            font-family: 'Lexend', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-
-        .glass-header p {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* 內容區 */
         .main-card {
             background: var(--card-bg);
-            padding: 25px 20px;
+            padding: 24px 20px;
             border-radius: 0 0 24px 24px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
-        /* 模式選擇 */
         .tab-group {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 8px;
+            margin-bottom: 24px;
             background: #f8fafc;
             padding: 6px;
-            border-radius: 16px;
+            border-radius: 14px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 12px 8px;
             border: none;
             background: transparent;
             color: var(--text-muted);
             font-weight: 700;
             cursor: pointer;
-            border-radius: 12px;
+            border-radius: 10px;
             transition: 0.3s;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .tab-btn.active {
             background: var(--accent);
             color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
         }
 
-        /* 表單樣式 */
-        .field {
-            margin-bottom: 18px;
-        }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px; }
 
-        .field label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }
-
-        .input-group {
-            position: relative;
-        }
-
+        .input-group { position: relative; }
         .input-group input, .input-group select {
             width: 100%;
-            padding: 15px 18px;
+            padding: 14px 16px;
             border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-family: inherit;
+            border-radius: 12px;
+            font-size: 1rem;
             outline: none;
-            transition: 0.2s;
             background: white;
         }
 
-        .input-group input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
+        .input-group input:focus { border-color: var(--accent); }
+        .unit-label { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; font-weight: 600; pointer-events: none; }
 
-        .unit-label {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-weight: 600;
-            pointer-events: none;
-        }
-
-        /* 按鈕 */
         .btn-submit {
             width: 100%;
             background: var(--primary);
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 16px;
-            font-size: 1.2rem;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s;
+            margin-top: 8px;
         }
 
-        .btn-submit:hover { background: #000; }
         .btn-submit:active { transform: scale(0.98); }
 
-        /* 結果顯示 */
         .result-panel {
-            margin-top: 25px;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 16px;
             background: #f0fdf4;
             border: 2px solid var(--success);
-            border-radius: 18px;
+            border-radius: 16px;
             display: none;
-            animation: slideUp 0.3s ease-out;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .result-label { color: var(--text-muted); font-size: 0.8rem; }
+        .result-value { font-size: 1.6rem; font-weight: 800; color: var(--success); }
 
-        .result-label { color: var(--text-muted); font-size: 0.85rem; }
-        .result-value { 
-            font-size: 1.8rem; 
-            font-weight: 800; 
-            color: var(--success); 
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
-        }
-
-        /* 公式區 */
         .formula-card {
             margin-top: 20px;
             background: #fff;
-            padding: 15px;
-            border-radius: 16px;
+            padding: 12px;
+            border-radius: 12px;
             border: 1px solid #e2e8f0;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.5;
         }
-
-        .formula-card b { color: var(--primary); }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <div class="glass-header">
-        <div class="lang-toggle">
-            <button class="lang-btn active" id="btn-zh" onclick="setLang('zh')">中</button>
-            <button class="lang-btn" id="btn-vi" onclick="setLang('vi')">VN</button>
+        <div class="title-area">
+            <h1 id="title">膠片長度計算器</h1>
+            <p id="subtitle">Film Calculation Solution</p>
         </div>
-        <h1 id="title">膠片長度計算器</h1>
-        <p id="subtitle">Film Calculation Solution</p>
+        <div class="lang-toggle">
+            <button class="lang-btn active" id="btn-zh" onclick="setLang('zh')">中文</button>
+            <button class="lang-btn" id="btn-vi" onclick="setLang('vi')">Tiếng Việt</button>
+        </div>
     </div>
 
     <div class="main-card">
@@ -293,7 +240,7 @@
             </div>
         </div>
 
-        <button class="btn-submit" id="btn-calc" onclick="calculate()">開始計算計算</button>
+        <button class="btn-submit" id="btn-calc" onclick="calculate()">開始計算</button>
 
         <div class="result-panel" id="resultArea">
             <div class="result-label" id="res-label">換算結果：</div>
@@ -305,9 +252,7 @@
 
         <div class="formula-card">
             <b id="f-title">計算公式：</b><br>
-            <span id="f-content">
-                重量(kg) = 厚度(mm) × 寬度(mm) × 長度(M) × 密度 ÷ 1000
-            </span>
+            <span id="f-content">重量(kg) = 厚度(mm) × 寬度(mm) × 長度(M) × 密度 ÷ 1000</span>
         </div>
     </div>
 </div>
@@ -351,8 +296,6 @@
         currentLang = lang;
         document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
         document.getElementById('btn-vi').classList.toggle('active', lang === 'vi');
-        
-        // 更新文字
         const t = translations[lang];
         document.getElementById('title').innerText = t.title;
         document.getElementById('subtitle').innerText = t.subtitle;
@@ -365,8 +308,6 @@
         document.getElementById('res-label').innerText = t.resLabel;
         document.getElementById('f-title').innerText = t.fTitle;
         document.getElementById('f-content').innerText = t.fContent;
-
-        // 更新 Tab 內容
         document.querySelectorAll('[data-zh]').forEach(el => {
             el.innerText = el.getAttribute(`data-${lang}`);
         });
@@ -385,15 +326,8 @@
         const d = parseFloat(document.getElementById('density').value);
         const t = parseFloat(document.getElementById('t').value);
         const w = parseFloat(document.getElementById('w').value);
-        
-        if(!t || !w) {
-            alert(translations[currentLang].msgError);
-            return;
-        }
-
-        let val = 0;
-        let unit = "";
-
+        if(!t || !w) { alert(translations[currentLang].msgError); return; }
+        let val = 0, unit = "";
         if (mode === 'L') {
             const weight = parseFloat(document.getElementById('weight').value);
             if(!weight) { alert(translations[currentLang].msgError); return; }
@@ -405,14 +339,10 @@
             val = (t * w * length * d) / 1000;
             unit = " kg";
         }
-
         document.getElementById('res-val').innerText = val.toLocaleString(undefined, {maximumFractionDigits: 3});
         document.getElementById('res-unit').innerText = unit;
         document.getElementById('resultArea').style.display = 'block';
     }
-
-    // 初始化語言
-    setLang('zh');
 </script>
 
 </body>
