@@ -2,644 +2,321 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>膠片長度計算器 · 雙語版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>膠片長度計算器 v9</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <style>
-        /* 現代重置 & 字體 */
+        :root {
+            --brand-blue: #2563eb;
+            --brand-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            --bg-soft: #f8fafc;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(145deg, #f0f4fa 0%, #e9eef5 100%);
-            min-height: 100vh;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-soft);
+            color: #1e293b;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 16px;
-            margin: 0;
-            line-height: 1.5;
-            color: #1e2b37;
+            min-height: 100vh;
+            padding: 15px;
         }
 
-        /* 主卡片 — 輕盈毛玻璃 */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border-radius: 40px;
-            box-shadow: 0 20px 40px -10px rgba(0, 30, 50, 0.2),
-                        0 8px 20px rgba(0, 0, 0, 0.03),
-                        inset 0 1px 1px rgba(255,255,255,0.6);
+        .wrapper {
             width: 100%;
             max-width: 480px;
-            padding: 28px 22px 32px;
-            border: 1px solid rgba(255,255,255,0.5);
-            transition: all 0.2s ease;
+            margin-top: 20px;
         }
 
-        /* 標題列 + 語言切換 */
-        .title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .title-main {
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            background: linear-gradient(150deg, #1b3b4f, #2b5e7a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.1;
-        }
-
-        /* 語言切換器 — 小巧按鈕 */
-        .lang-switch {
-            display: flex;
-            gap: 6px;
-            background: #eef3f8;
-            border-radius: 60px;
-            padding: 4px;
-            border: 1px solid rgba(100,140,180,0.2);
-        }
-
-        .lang-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 50px;
-            background: transparent;
-            font-size: 1rem;
-            font-weight: 550;
-            color: #3f617d;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .lang-btn.active {
-            background: white;
-            color: #0e4b6f;
-            box-shadow: 0 4px 8px rgba(37, 90, 130, 0.1);
-        }
-
-        /* 選項卡 */
-        .tab-modern {
-            display: flex;
-            gap: 12px;
-            background: #e9f0f7;
-            border-radius: 80px;
-            padding: 6px;
-            margin-bottom: 28px;
-            border: 1px solid rgba(130, 160, 190, 0.2);
-        }
-
-        .tab-modern .tab {
-            flex: 1;
+        /* 標題區域 */
+        .header-panel {
+            background: var(--brand-gradient);
+            border-radius: 24px 24px 0 0;
+            padding: 30px 20px;
             text-align: center;
-            padding: 14px 4px;
-            font-size: 1.2rem;
-            font-weight: 520;
-            border-radius: 60px;
-            background: transparent;
-            color: #3f617d;
-            cursor: pointer;
-            transition: all 0.25s;
-            border: none;
-            line-height: 1.2;
+            color: white;
+            box-shadow: var(--card-shadow);
         }
 
-        .tab-modern .tab.active {
+        .header-panel h1 {
+            font-size: 1.6rem;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-panel p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* 主要內容卡片 */
+        .main-card {
             background: white;
-            color: #0e4b6f;
-            box-shadow: 0 6px 14px rgba(37, 90, 130, 0.15);
-            font-weight: 600;
+            border-radius: 0 0 24px 24px;
+            padding: 25px 20px;
+            box-shadow: var(--card-shadow);
         }
 
-        /* 輸入區塊 */
-        .input-panel {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-            border-radius: 36px;
-            padding: 20px 18px;
-            margin-bottom: 18px;
-            border: 1px solid rgba(255,255,255,0.8);
-            box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
+        /* 模式切換按鈕 */
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
         }
 
-        .field {
+        .mode-tab {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            color: #64748b;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .mode-tab.active {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+            background: #eff6ff;
+        }
+
+        /* 表單設計 */
+        .form-row {
             margin-bottom: 20px;
         }
 
-        .field:last-of-type {
-            margin-bottom: 6px;
-        }
-
-        .field label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-            font-weight: 520;
-            color: #1f4a69;
-            margin-bottom: 8px;
-            letter-spacing: 0.3px;
-        }
-
-        .field label i {
-            font-style: normal;
-            font-size: 1.2rem;
-        }
-
-        .field input, .field select {
-            width: 100%;
-            padding: 16px 20px;
-            font-size: 1.1rem;
-            border: 1.5px solid #cbdae8;
-            border-radius: 40px;
-            background: white;
-            outline: none;
-            transition: border 0.2s, box-shadow 0.2s;
-            font-family: inherit;
-            appearance: none;
-            -webkit-appearance: none;
-            color: #11212e;
-        }
-
-        .field select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%233f6b8a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 20px center;
-            background-size: 18px;
-        }
-
-        .field input:focus, .field select:focus {
-            border-color: #5d9bc5;
-            box-shadow: 0 0 0 4px rgba(72, 149, 211, 0.15);
-        }
-
-        .field-hint {
-            font-size: 0.85rem;
-            color: #5b7992;
-            margin-top: 6px;
-            margin-left: 16px;
-        }
-
-        /* 主要按鈕 */
-        .btn-gradient {
-            background: linear-gradient(115deg, #1d618b, #1c7bb0);
-            border: none;
-            width: 100%;
-            padding: 20px 18px;
-            font-size: 1.5rem;
-            font-weight: 600;
-            border-radius: 60px;
-            color: white;
-            margin: 10px 0 14px;
-            box-shadow: 0 12px 22px -8px #1c6090a0;
-            cursor: pointer;
-            transition: transform 0.12s, box-shadow 0.2s;
-            letter-spacing: 1px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .btn-gradient:active {
-            transform: scale(0.97);
-            box-shadow: 0 6px 12px -4px #1b5580;
-        }
-
-        .btn-outline {
-            background: rgba(230, 242, 255, 0.7);
-            border: 1.5px solid #aac3db;
-            width: 100%;
-            padding: 16px;
-            font-size: 1.2rem;
-            font-weight: 550;
-            border-radius: 50px;
-            color: #1e5273;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: 0.12s;
-            backdrop-filter: blur(4px);
-        }
-
-        .btn-outline:active {
-            background: #cbdff2;
-            border-color: #7fa3c4;
-        }
-
-        /* 結果面板 */
-        .result-panel {
-            background: white;
-            border-radius: 36px;
-            padding: 22px 20px;
-            margin-top: 22px;
-            box-shadow: 0 10px 20px -8px rgba(31, 70, 100, 0.25);
-            border: 1px solid #def;
-            display: none;
-        }
-
-        .result-panel h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #103e5c;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: -0.3px;
-        }
-
-        .result-grid {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .result-grid tr {
-            border-bottom: 1px solid #e2ecf7;
-        }
-
-        .result-grid tr:last-child {
-            border-bottom: none;
-        }
-
-        .result-grid td {
-            padding: 16px 8px;
-            font-size: 1.1rem;
-        }
-
-        .result-grid td:first-child {
-            font-weight: 500;
-            color: #316283;
-            width: 40%;
-        }
-
-        .result-grid td:last-child {
-            font-weight: 600;
-            color: #003459;
-            text-align: right;
-            font-size: 1.2rem;
-        }
-
-        .print-meta {
-            font-size: 0.9rem;
-            color: #5982a0;
-            text-align: right;
-            margin-top: 12px;
-            border-top: 1px dashed #b7d3ea;
-            padding-top: 14px;
-        }
-
-        /* 公式卡 */
-        .formula-note {
-            background: #e7f0fa;
-            border-radius: 30px;
-            padding: 18px 20px;
-            margin-top: 28px;
-            border: 1px solid #c3ddf5;
+        .form-row label {
+            display: block;
             font-size: 0.95rem;
-            color: #174160;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 8px;
         }
 
-        .formula-note p {
-            font-weight: 550;
-            margin-bottom: 10px;
+        .input-wrapper {
+            position: relative;
         }
 
-        .formula-note ul {
-            padding-left: 24px;
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.2s;
+            appearance: none;
         }
 
-        .formula-note li {
-            margin: 8px 0;
+        .input-wrapper input:focus {
+            border-color: var(--brand-blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
         }
 
-        /* 列印專屬 */
-        @media print {
-            body { background: white; padding: 0; }
-            .glass-card { box-shadow: none; backdrop-filter: none; background: white; padding: 15px; }
-            .no-print, .tab-modern, .btn-gradient, .btn-outline, .input-panel, .formula-note, .lang-switch { display: none !important; }
-            .result-panel { display: block !important; background: white; border: 1px solid #ccc; box-shadow: none; }
-            .print-only { display: block; }
+        .unit-tag {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-weight: 700;
+            pointer-events: none;
         }
 
-        .print-only { display: none; }
-        .divider {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #b7d4ed, transparent);
-            margin: 16px 0 10px;
+        /* 計算按鈕 */
+        .btn-calc {
+            width: 100%;
+            background: var(--brand-gradient);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            margin-top: 10px;
+            transition: transform 0.1s;
         }
+
+        .btn-calc:active {
+            transform: scale(0.97);
+        }
+
+        /* 結果顯示 */
+        #result-box {
+            margin-top: 25px;
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 20px;
+            display: none;
+            border-left: 6px solid var(--brand-blue);
+        }
+
+        .result-title {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
+            word-break: break-all;
+        }
+
+        /* 腳註公式 */
+        .footer-info {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            line-height: 1.5;
+        }
+
+        .footer-info b { color: #64748b; }
     </style>
 </head>
 <body>
-    <div class="glass-card">
-        <!-- 標題列 + 語言切換 -->
-        <div class="title-row">
-            <div class="title-main" data-i18n="appTitle">膠片長度計算器</div>
-            <div class="lang-switch no-print">
-                <button class="lang-btn active" id="lang-zh" onclick="setLanguage('zh')">中文</button>
-                <button class="lang-btn" id="lang-vi" onclick="setLanguage('vi')">Tiếng Việt</button>
-            </div>
-        </div>
 
-        <!-- 選項卡 -->
-        <div class="tab-modern no-print">
-            <div class="tab active" id="tab-length" onclick="switchTab('length')">
-                <span>📏 </span><span data-i18n="tabLength">長度</span>
-            </div>
-            <div class="tab" id="tab-weight" onclick="switchTab('weight')">
-                <span>⚖️ </span><span data-i18n="tabWeight">重量</span>
-            </div>
-        </div>
-
-        <!-- 輸入表單卡片 -->
-        <div class="input-panel">
-            <!-- 材料 -->
-            <div class="field">
-                <label><i>🧪</i> <span data-i18n="materialLabel">材料</span></label>
-                <select id="material">
-                    <option value="PET">PET (1.34 g/cm³)</option>
-                    <option value="PP">PP (0.91 g/cm³)</option>
-                </select>
-            </div>
-
-            <!-- 厚度 -->
-            <div class="field">
-                <label><i>📏</i> <span data-i18n="thicknessLabel">厚度 (mm)</span></label>
-                <input type="number" id="thickness" step="0.001" min="0" 
-                       placeholder="例 0.125 mm" 
-                       data-i18n-placeholder="thicknessPlaceholder">
-                <div class="field-hint" data-i18n="hintThickness">⏺ 常用 0.012～0.25 mm</div>
-            </div>
-
-            <!-- 寬度 -->
-            <div class="field">
-                <label><i>📐</i> <span data-i18n="widthLabel">寬度 (mm)</span></label>
-                <input type="number" id="width" step="0.1" min="0" 
-                       placeholder="例 500 mm"
-                       data-i18n-placeholder="widthPlaceholder">
-            </div>
-
-            <!-- 動態區：重量輸入（長度模式） -->
-            <div class="field toggle-group" id="weight-input-group">
-                <label><i>⚖️</i> <span data-i18n="weightLabel">膠片重量 (kg)</span></label>
-                <input type="number" id="weight" step="0.001" min="0" 
-                       placeholder="公斤數"
-                       data-i18n-placeholder="weightPlaceholder">
-            </div>
-
-            <!-- 動態區：長度輸入（重量模式）預設隱藏 -->
-            <div class="field toggle-group" id="length-input-group" style="display: none;">
-                <label><i>📏</i> <span data-i18n="lengthLabel">膠片長度 (M)</span></label>
-                <input type="number" id="length" step="0.1" min="0" 
-                       placeholder="米數"
-                       data-i18n-placeholder="lengthPlaceholder">
-            </div>
-        </div>
-
-        <!-- 主要計算按鈕 -->
-        <button class="btn-gradient" id="calculateButton" onclick="calculate()">
-            <span id="calcBtnText">計算長度</span>
-        </button>
-        <button class="btn-outline no-print" id="printButton" onclick="printResult()" style="display:none;">
-            <span>🖨️ </span><span id="printBtnText">列印結果</span>
-        </button>
-
-        <!-- 結果顯示區 -->
-        <div class="result-panel" id="result">
-            <div class="print-only">
-                <h2 style="font-size:2rem; margin-bottom: 8px;" data-i18n="printHeader">膠片長度計算結果</h2>
-                <p><span data-i18n="printDateLabel">列印日期</span>：<span id="print-date"></span></p>
-                <hr style="border:0.5px solid #aaa; margin:12px 0;">
-            </div>
-            <h3><span>📋 </span><span data-i18n="resultTitle">換算結果</span></h3>
-            <table class="result-grid">
-                <tr><td><span data-i18n="resultMaterialLabel">膠片材料</span></td><td id="result-material"></td></tr>
-                <tr><td><span data-i18n="resultThicknessLabel">厚度 (mm)</span></td><td id="result-thickness"></td></tr>
-                <tr><td><span data-i18n="resultWidthLabel">寬度 (mm)</span></td><td id="result-width"></td></tr>
-                <tr id="result-weight-row"><td><span data-i18n="resultWeightLabel">重量 (kg)</span></td><td id="result-weight"></td></tr>
-                <tr id="result-length-row"><td><span data-i18n="resultLengthLabel">長度 (M)</span></td><td id="result-length"></td></tr>
-            </table>
-            <div class="print-meta no-print" data-i18n="resultFootnote">—— 依據密度公式換算 ——</div>
-        </div>
-
-        <!-- 公式卡 (雙語) -->
-        <div class="formula-note no-print">
-            <p><span data-i18n="formulaTitle">換算基礎</span></p>
-            <ul>
-                <li data-i18n="formulaPET">PET 重量(kg) = (厚mm × 寬mm × 長M × 1.34) / 1000</li>
-                <li data-i18n="formulaPP">PP 重量(kg) = (厚mm × 寬mm × 長M × 0.91) / 1000</li>
-                <li data-i18n="formulaLength">長度(M) = (重量kg × 1000) / (厚mm × 寬mm × 密度)</li>
-            </ul>
-        </div>
+<div class="wrapper">
+    <div class="header-panel">
+        <h1>膠片長度計算器</h1>
+        <p>Industrial Film Calculator v9.0</p>
     </div>
 
-    <script>
-        // ---------- 多語系定義 ----------
-        const i18n = {
-            zh: {
-                appTitle: '膠片長度計算器',
-                tabLength: '長度',
-                tabWeight: '重量',
-                materialLabel: '材料',
-                thicknessLabel: '厚度 (mm)',
-                widthLabel: '寬度 (mm)',
-                weightLabel: '膠片重量 (kg)',
-                lengthLabel: '膠片長度 (M)',
-                thicknessPlaceholder: '例 0.125 mm',
-                widthPlaceholder: '例 500 mm',
-                weightPlaceholder: '公斤數',
-                lengthPlaceholder: '米數',
-                hintThickness: '⏺ 常用 0.012～0.25 mm',
-                calcLengthBtn: '計算長度',
-                calcWeightBtn: '計算重量',
-                printBtn: '列印結果',
-                resultMaterialLabel: '膠片材料',
-                resultThicknessLabel: '厚度 (mm)',
-                resultWidthLabel: '寬度 (mm)',
-                resultWeightLabel: '重量 (kg)',
-                resultLengthLabel: '長度 (M)',
-                resultTitle: '換算結果',
-                resultFootnote: '—— 依據密度公式換算 ——',
-                formulaTitle: '換算基礎',
-                formulaPET: 'PET 重量(kg) = (厚mm × 寬mm × 長M × 1.34) / 1000',
-                formulaPP: 'PP 重量(kg) = (厚mm × 寬mm × 長M × 0.91) / 1000',
-                formulaLength: '長度(M) = (重量kg × 1000) / (厚mm × 寬mm × 密度)',
-                printHeader: '膠片長度計算結果',
-                printDateLabel: '列印日期'
-            },
-            vi: {
-                appTitle: 'Máy tính chiều dài phim',
-                tabLength: 'Chiều dài',
-                tabWeight: 'Trọng lượng',
-                materialLabel: 'Vật liệu',
-                thicknessLabel: 'Độ dày (mm)',
-                widthLabel: 'Chiều rộng (mm)',
-                weightLabel: 'Trọng lượng phim (kg)',
-                lengthLabel: 'Chiều dài phim (M)',
-                thicknessPlaceholder: 'Ví dụ: 0.125 mm',
-                widthPlaceholder: 'Ví dụ: 500 mm',
-                weightPlaceholder: 'Số kg',
-                lengthPlaceholder: 'Số mét',
-                hintThickness: '⏺ Thường dùng 0.012–0.25 mm',
-                calcLengthBtn: 'Tính chiều dài',
-                calcWeightBtn: 'Tính trọng lượng',
-                printBtn: 'In kết quả',
-                resultMaterialLabel: 'Vật liệu phim',
-                resultThicknessLabel: 'Độ dày (mm)',
-                resultWidthLabel: 'Chiều rộng (mm)',
-                resultWeightLabel: 'Trọng lượng (kg)',
-                resultLengthLabel: 'Chiều dài (M)',
-                resultTitle: 'Kết quả quy đổi',
-                resultFootnote: '—— Theo công thức mật độ ——',
-                formulaTitle: 'Công thức cơ bản',
-                formulaPET: 'PET: (dày mm × rộng mm × dài M × 1.34) / 1000',
-                formulaPP: 'PP: (dày mm × rộng mm × dài M × 0.91) / 1000',
-                formulaLength: 'Dài (M) = (kg × 1000) / (dày mm × rộng mm × mật độ)',
-                printHeader: 'Kết quả tính chiều dài phim',
-                printDateLabel: 'Ngày in'
-            }
-        };
+    <div class="main-card">
+        <div class="mode-selector">
+            <div class="mode-tab active" onclick="setMode('L', this)">⚖️ 求長度</div>
+            <div class="mode-tab" onclick="setMode('W', this)">📏 求重量</div>
+        </div>
 
-        // 當前語言
-        let currentLang = 'zh';
+        <div class="form-row">
+            <label>材料類型</label>
+            <div class="input-wrapper">
+                <select id="density">
+                    <option value="1.34">PET (密度 1.34)</option>
+                    <option value="0.91">PP (密度 0.91)</option>
+                    <option value="1.38">PVC (密度 1.38)</option>
+                </select>
+            </div>
+        </div>
 
-        // 切換語言
-        function setLanguage(lang) {
-            currentLang = lang;
-            // 更新按鈕active樣式
-            document.getElementById('lang-zh').classList.toggle('active', lang === 'zh');
-            document.getElementById('lang-vi').classList.toggle('active', lang === 'vi');
+        <div class="form-row">
+            <label>厚度 (Thickness)</label>
+            <div class="input-wrapper">
+                <input type="number" id="t" placeholder="0.125" step="0.001" inputmode="decimal">
+                <span class="unit-tag">mm</span>
+            </div>
+        </div>
 
-            // 更新所有帶 data-i18n 屬性的元素
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) {
-                    el.textContent = i18n[lang][key];
-                }
-            });
+        <div class="form-row">
+            <label>寬度 (Width)</label>
+            <div class="input-wrapper">
+                <input type="number" id="w" placeholder="500" step="0.1" inputmode="decimal">
+                <span class="unit-tag">mm</span>
+            </div>
+        </div>
 
-            // 更新所有帶 data-i18n-placeholder 的輸入框
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (i18n[lang][key]) {
-                    el.placeholder = i18n[lang][key];
-                }
-            });
+        <div class="form-row" id="row-weight">
+            <label>膠片重量 (Weight)</label>
+            <div class="input-wrapper">
+                <input type="number" id="weight" placeholder="輸入重量" step="0.01" inputmode="decimal">
+                <span class="unit-tag">kg</span>
+            </div>
+        </div>
 
-            // 更新計算按鈕文字 (根據當前模式)
-            updateCalcButtonText();
+        <div class="form-row" id="row-length" style="display:none;">
+            <label>膠片長度 (Length)</label>
+            <div class="input-wrapper">
+                <input type="number" id="length" placeholder="輸入長度" step="1" inputmode="decimal">
+                <span class="unit-tag">M</span>
+            </div>
+        </div>
 
-            // 更新列印按鈕文字 (固定)
-            document.getElementById('printBtnText').textContent = i18n[lang].printBtn;
+        <button class="btn-calc" onclick="calculate()">立即計算</button>
+
+        <div id="result-box">
+            <p class="result-title" id="res-label">計算結果</p>
+            <div class="result-value" id="res-value">--</div>
+        </div>
+
+        <div class="footer-info">
+            <b>換算公式：</b><br>
+            重量(kg) = 厚度(mm) × 寬度(mm) × 長度(M) × 密度 ÷ 1000<br>
+            長度(M) = (重量 × 1000) ÷ (厚度 × 寬度 × 密度)
+        </div>
+    </div>
+</div>
+
+<script>
+    let mode = 'L'; // L: 求長度, W: 求重量
+
+    function setMode(m, el) {
+        mode = m;
+        // 切換 Tab 樣式
+        document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+
+        // 切換顯示欄位
+        document.getElementById('row-weight').style.display = (m === 'L') ? 'block' : 'none';
+        document.getElementById('row-length').style.display = (m === 'W') ? 'block' : 'none';
+        
+        // 重置結果
+        document.getElementById('result-box').style.display = 'none';
+    }
+
+    function calculate() {
+        const d = parseFloat(document.getElementById('density').value);
+        const t = parseFloat(document.getElementById('t').value);
+        const w = parseFloat(document.getElementById('w').value);
+        
+        if (!t || !w) {
+            alert("請輸入厚度與寬度！");
+            return;
         }
 
-        // 根據目前模式更新計算按鈕文字
-        function updateCalcButtonText() {
-            const mode = currentMode; // 'length' 或 'weight'
-            const btnText = mode === 'length' ? i18n[currentLang].calcLengthBtn : i18n[currentLang].calcWeightBtn;
-            document.getElementById('calcBtnText').textContent = btnText;
+        let result = 0;
+        let unit = "";
+        let label = "";
+
+        if (mode === 'L') {
+            const weight = parseFloat(document.getElementById('weight').value);
+            if (!weight) { alert("請輸入重量！"); return; }
+            result = (weight * 1000) / (t * w * d);
+            unit = " M";
+            label = "換算總長度：";
+        } else {
+            const length = parseFloat(document.getElementById('length').value);
+            if (!length) { alert("請輸入長度！"); return; }
+            result = (t * w * length * d) / 1000;
+            unit = " kg";
+            label = "預估總重量：";
         }
 
-        // ---------- 原有邏輯 (稍作修改以支援雙語) ----------
-        let currentMode = "length"; // 預設長度模式
+        // 顯示結果
+        const resBox = document.getElementById('result-box');
+        document.getElementById('res-label').innerText = label;
+        document.getElementById('res-value').innerText = result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 3}) + unit;
+        
+        resBox.style.display = 'block';
+    }
+</script>
 
-        function switchTab(mode) {
-            currentMode = mode;
-
-            // 更新標籤樣式
-            document.getElementById("tab-length").classList.remove("active");
-            document.getElementById("tab-weight").classList.remove("active");
-            document.getElementById("tab-" + mode).classList.add("active");
-
-            // 切換輸入區顯示
-            const weightGroup = document.getElementById("weight-input-group");
-            const lengthGroup = document.getElementById("length-input-group");
-            const calcBtn = document.getElementById("calculateButton");
-
-            if (mode === "length") {
-                weightGroup.style.display = "block";
-                lengthGroup.style.display = "none";
-            } else {
-                weightGroup.style.display = "none";
-                lengthGroup.style.display = "block";
-            }
-
-            // 更新按鈕文字 (多語)
-            updateCalcButtonText();
-
-            // 隱藏結果區域
-            document.getElementById("result").style.display = "none";
-            document.getElementById("printButton").style.display = "none";
-        }
-
-        function calculate() {
-            const material = document.getElementById("material").value;
-            const thickness = parseFloat(document.getElementById("thickness").value);
-            const width = parseFloat(document.getElementById("width").value);
-            const density = (material === "PET") ? 1.34 : 0.91;
-
-            if (currentMode === "length") {
-                const weight = parseFloat(document.getElementById("weight").value);
-                if (isNaN(thickness) || isNaN(width) || isNaN(weight) || thickness <= 0 || width <= 0 || weight <= 0) {
-                    alert(currentLang === 'zh' ? '請輸入有效的正數' : 'Vui lòng nhập số hợp lệ > 0');
-                    return;
-                }
-                const length = (weight * 1000) / (thickness * width * density);
-                document.getElementById("result-material").textContent = (material === "PET") ? "PET (1.34)" : "PP (0.91)";
-                document.getElementById("result-thickness").textContent = thickness + " mm";
-                document.getElementById("result-width").textContent = width + " mm";
-                document.getElementById("result-weight").textContent = weight + " kg";
-                document.getElementById("result-length").textContent = length.toFixed(2) + " M";
-            } else {
-                const length = parseFloat(document.getElementById("length").value);
-                if (isNaN(thickness) || isNaN(width) || isNaN(length) || thickness <= 0 || width <= 0 || length <= 0) {
-                    alert(currentLang === 'zh' ? '請輸入有效的正數' : 'Vui lòng nhập số hợp lệ > 0');
-                    return;
-                }
-                const weight = (thickness * width * length * density) / 1000;
-                document.getElementById("result-material").textContent = (material === "PET") ? "PET (1.34)" : "PP (0.91)";
-                document.getElementById("result-thickness").textContent = thickness + " mm";
-                document.getElementById("result-width").textContent = width + " mm";
-                document.getElementById("result-weight").textContent = weight.toFixed(3) + " kg";
-                document.getElementById("result-length").textContent = length + " M";
-            }
-
-            // 顯示兩行結果
-            document.getElementById("result-weight-row").style.display = "table-row";
-            document.getElementById("result-length-row").style.display = "table-row";
-
-            // 設定列印日期
-            const now = new Date();
-            const y = now.getFullYear();
-            const m = (now.getMonth() + 1).toString().padStart(2,'0');
-            const d = now.getDate().toString().padStart(2,'0');
-            const hr = now.getHours().toString().padStart(2,'0');
-            const min = now.getMinutes().toString().padStart(2,'0');
-            document.getElementById("print-date").textContent = `${y}/${m}/${d} ${hr}:${min}`;
-
-            // 顯示結果與列印按鈕
-            document.getElementById("result").style.display = "block";
-            document.getElementById("printButton").style.display = "block";
-        }
-
-        function printResult() {
-            window.print();
-        }
-
-        // 初始化: 設定預設語言 (中文) 並同步所有文字
-        window.addEventListener('load', function() {
-            setLanguage('zh');
-            switchTab('length');   // 預設長度模式
-        });
-    </script>
 </body>
 </html>
